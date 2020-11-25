@@ -16,7 +16,7 @@ namespace StressData.Model
 
         public override string ToString()
         {
-            return base.ToString() + ": " + WsmId + ", " + Type + ", " + Regime + ", " + Location;
+            return base.ToString() + ": " + Id + ", " + WsmId + ", " + Type + ", " + Regime + ", " + Location;
         }
     }
 }
