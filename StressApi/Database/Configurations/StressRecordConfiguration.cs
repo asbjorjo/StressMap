@@ -17,7 +17,7 @@ namespace StressApi.Database.Configurations
 
             builder.Property(s => s.Location)
                 .IsRequired()
-                .HasSrid(4326)
+                .HasSrid(GeometryConstants.SRID)
                 .HasColumnType("POINTZ");
             builder.Property(s => s.Quality)
                 .IsRequired()
