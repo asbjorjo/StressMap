@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StressData", "StressData\StressData.csproj", "{8EC46B10-9BF1-448D-B089-66F5DA6C1D2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StressApi", "StressApi\StressApi.csproj", "{41B3EED3-EB8A-4F85-90EF-388668D261D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadWsm", "LoadWsm\LoadWsm.csproj", "{6DC10F9A-0F80-4F6E-AFBB-06D810603E9E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8EC46B10-9BF1-448D-B089-66F5DA6C1D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EC46B10-9BF1-448D-B089-66F5DA6C1D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EC46B10-9BF1-448D-B089-66F5DA6C1D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EC46B10-9BF1-448D-B089-66F5DA6C1D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B3EED3-EB8A-4F85-90EF-388668D261D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B3EED3-EB8A-4F85-90EF-388668D261D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B3EED3-EB8A-4F85-90EF-388668D261D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B3EED3-EB8A-4F85-90EF-388668D261D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC10F9A-0F80-4F6E-AFBB-06D810603E9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC10F9A-0F80-4F6E-AFBB-06D810603E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC10F9A-0F80-4F6E-AFBB-06D810603E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC10F9A-0F80-4F6E-AFBB-06D810603E9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A999ABD9-D403-43F7-853F-DEC732AC9704}
+	EndGlobalSection
+EndGlobal
