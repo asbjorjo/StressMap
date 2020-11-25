@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,6 +10,7 @@ using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Converters;
 using StressApi.Database;
+using StressApi.Database.Constants;
 using StressData.Model;
 
 namespace StressApi.Controllers
@@ -37,9 +36,9 @@ namespace StressApi.Controllers
         [HttpGet]
         public async Task<ActionResult<FeatureCollection>> GetStressRecords()
         {
-            var records = _context.StressRecords.OrderBy(s => s.WsmId).Take(10);
+            var records = _context.StressRecords.OrderBy(s => s.WsmId);
 
-            var geometryFactory = _geometryServices.CreateGeometryFactory(4326);
+            var geometryFactory = _geometryServices.CreateGeometryFactory(GeometryConstants.SRID);
             var result = new FeatureCollection();
 
             foreach (var record in records)
@@ -69,12 +68,22 @@ namespace StressApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStressRecord(long id, IFeature stressFeature)
         {
-            if (id.ToString() != stressFeature.GetOptionalId(GeoJsonConverterFactory.DefaultIdPropertyName).ToString())
+            StressRecord stressRecord;
+
+            try
+            {
+                stressRecord = RecordFromFeature(stressFeature);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            if (stressRecord.Id != id)
             {
                 return BadRequest();
             }
 
-            var stressRecord = RecordFromFeature(stressFeature);
 
             _context.Entry(stressRecord).State = EntityState.Modified;
 
