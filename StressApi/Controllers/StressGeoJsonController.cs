@@ -9,11 +9,11 @@ using NetTopologySuite;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Converters;
-using StressApi.Database;
-using StressApi.Database.Constants;
+using StressData.Database;
+using StressData.Database.Constants;
 using StressData.Model;
 
-namespace StressApi.Controllers
+namespace StressData.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

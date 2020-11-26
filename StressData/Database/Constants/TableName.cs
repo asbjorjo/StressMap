@@ -1,4 +1,4 @@
-﻿namespace StressApi.Database.Constants
+﻿namespace StressData.Database.Constants
 {
     internal static class TableName
     {

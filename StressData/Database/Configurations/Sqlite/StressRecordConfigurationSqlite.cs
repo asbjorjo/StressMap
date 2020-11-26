@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using StressApi.Database.Constants;
+using StressData.Database.Constants;
 using StressData.Model;
 
-namespace StressApi.Database.Configurations.Sqlite
+namespace StressData.Database.Configurations.Sqlite
 {
     public class StressRecordConfigurationSqlite : StressRecordConfiguration
     {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NetTopologySuite;
-using StressApi.Database;
+using StressData.Database;
 using System;
 using System.Text.Json.Serialization;
 
@@ -28,7 +28,12 @@ namespace StressMapApi
             services.AddDbContext<StressDbContext>(
                 options => _ = provider switch
                 {
-                    "Sqlite" => options.UseSqlite("Filename=stress.db", x => x.UseNetTopologySuite()),
+                    "Sqlite" => options.UseSqlite(
+                        "Filename=stress.db",
+                        x => { 
+                            x.MigrationsAssembly("StressMigrationsSqlite"); 
+                            x.UseNetTopologySuite(); 
+                        }),
                     _ => throw new ArgumentException($"Unsupported provider: {provider}")
                 });
             services.AddControllers()

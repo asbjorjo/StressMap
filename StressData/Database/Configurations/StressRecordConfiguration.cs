@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using StressApi.Database.Constants;
+using StressData.Database.Constants;
 using StressData.Model;
 
-namespace StressApi.Database.Configurations
+namespace StressData.Database.Configurations
 {
     public class StressRecordConfiguration : IEntityTypeConfiguration<StressRecord>
     {

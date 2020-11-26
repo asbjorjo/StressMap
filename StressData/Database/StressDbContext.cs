@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StressData.Model;
-using StressApi.Database.Configurations;
-using StressApi.Database.Configurations.Sqlite;
+using StressData.Database.Configurations;
+using StressData.Database.Configurations.Sqlite;
 
-namespace StressApi.Database
+namespace StressData.Database
 {
     public class StressDbContext : DbContext
     {

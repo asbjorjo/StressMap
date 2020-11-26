@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite;
-using StressApi.Database;
+using StressData.Database;
 using StressData.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StressApi.Controllers
+namespace StressData.Controllers
 {
     [ApiController]
     [Route("[controller]")]
