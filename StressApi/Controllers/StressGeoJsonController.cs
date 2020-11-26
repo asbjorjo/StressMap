@@ -113,7 +113,12 @@ namespace StressApi.Controllers
         {
             var record = RecordFromFeature(stressFeature);
 
-            _context.Set<StressRecord>().Add(record);
+            if (_context.Set<StressRecord>().Any(s => s.WsmId == record.WsmId))
+            {
+                return BadRequest("trying to add existing record");
+            }
+
+            await _context.Set<StressRecord>().AddAsync(record);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStressRecord", new { id = stressFeature.GetOptionalId(GeoJsonConverterFactory.DefaultIdPropertyName) }, stressFeature);
