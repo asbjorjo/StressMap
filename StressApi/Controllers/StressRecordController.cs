@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite;
 using StressApi.Database;
@@ -14,7 +15,7 @@ namespace StressApi.Controllers
     public class StressRecordController : ControllerBase
     {
         private readonly ILogger<StressRecordController> _logger;
-        private readonly StressDbContext _dbContext;
+        private readonly DbContext _dbContext;
         private readonly NtsGeometryServices _geometryServices;
 
         public StressRecordController(ILogger<StressRecordController> logger, StressDbContext stressDbContext, NtsGeometryServices geometryServices)
@@ -27,7 +28,7 @@ namespace StressApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StressRecord>> GetById(long id)
         {
-            var record = await _dbContext.StressRecords.FindAsync(id);
+            var record = await _dbContext.Set<StressRecord>().FindAsync(id);
 
             return record;
         }
@@ -35,7 +36,7 @@ namespace StressApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<StressRecord>> GetAll()
         {
-            var records = _dbContext.StressRecords.ToList();
+            var records = _dbContext.Set<StressRecord>().ToList();
 
             return records;
         }
@@ -43,7 +44,7 @@ namespace StressApi.Controllers
         [HttpPost]
         public async Task<ActionResult<StressRecord>> Add(StressRecord record)
         {
-            if (_dbContext.StressRecords.SingleOrDefault(r => r.WsmId == record.WsmId) != null)
+            if (_dbContext.Set<StressRecord>().SingleOrDefault(r => r.WsmId == record.WsmId) != null)
             {
                 return BadRequest("Record already exists.");
             }

@@ -19,7 +19,7 @@ namespace StressApi.Controllers
     [ApiController]
     public class StressGeoJsonController : ControllerBase
     {
-        private readonly StressDbContext _context;
+        private readonly DbContext _context;
         private readonly ILogger<StressGeoJsonController> _logger;
         private readonly NtsGeometryServices _geometryServices;
         private readonly IOptions<JsonOptions> _jsonOptions;
@@ -36,7 +36,7 @@ namespace StressApi.Controllers
         [HttpGet]
         public async Task<ActionResult<FeatureCollection>> GetStressRecords()
         {
-            var records = _context.StressRecords.OrderBy(s => s.WsmId);
+            var records = _context.Set<StressRecord>().OrderBy(s => s.WsmId);
 
             var geometryFactory = _geometryServices.CreateGeometryFactory(GeometryConstants.SRID);
             var result = new FeatureCollection();
@@ -53,7 +53,7 @@ namespace StressApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IFeature>> GetStressRecord(long id)
         {
-            var stressRecord = await _context.StressRecords.FindAsync(id);
+            var stressRecord = await _context.Set<StressRecord>().FindAsync(id);
 
             if (stressRecord == null)
             {
@@ -113,7 +113,7 @@ namespace StressApi.Controllers
         {
             var record = RecordFromFeature(stressFeature);
 
-            _context.StressRecords.Add(record);
+            _context.Set<StressRecord>().Add(record);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStressRecord", new { id = stressFeature.GetOptionalId(GeoJsonConverterFactory.DefaultIdPropertyName) }, stressFeature);
@@ -123,13 +123,13 @@ namespace StressApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStressRecord(long id)
         {
-            var stressRecord = await _context.StressRecords.FindAsync(id);
+            var stressRecord = await _context.Set<StressRecord>().FindAsync(id);
             if (stressRecord == null)
             {
                 return NotFound();
             }
 
-            _context.StressRecords.Remove(stressRecord);
+            _context.Set<StressRecord>().Remove(stressRecord);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -137,7 +137,7 @@ namespace StressApi.Controllers
 
         private bool StressRecordExists(long id)
         {
-            return _context.StressRecords.Any(e => e.Id == id);
+            return _context.Set<StressRecord>().Any(e => e.Id == id);
         }
 
         private Feature FeatureFromRecord(StressRecord record)
