@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using LoadWsm.Map;
+using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using StressData.Model;
 using System;
@@ -28,9 +29,6 @@ namespace LoadWsm
             using (var reader = new StreamReader(fileName))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
-                //csv.Configuration.RegisterClassMap<StressRecordMap>();
-                //var records = csv.GetRecords<StressRecord>();
-                
                 csv.Read();
                 csv.ReadHeader();
 
@@ -64,23 +62,9 @@ namespace LoadWsm
 
             Console.WriteLine(records.Count);
 
-            //var stressrecord = new StressRecord()
-            //{
-            //    WsmId = "tst0000",
-            //    ISO = "NO0000",
-            //    Azimuth = 15,
-            //    Location = new Point(new CoordinateZ(50, 50, -10)),
-            //    Quality = StressData.Types.StressTypes.QualityType.E,
-            //    Regime = StressData.Types.StressTypes.RegimeType.NF,
-            //    Type = StressData.Types.StressTypes.RecordType.SWB
-            //};
-            //stressrecord.Location.SRID = 4236;
-
-            //var stressrecord = records.First();
-
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:5001/StressApi/");
+                client.BaseAddress = new Uri("https://localhost:5001/api/StressGeoJson/");
 
                 var jsonOptions = new JsonSerializerOptions();
                 jsonOptions.Converters.Add(new JsonStringEnumConverter());
@@ -89,24 +73,21 @@ namespace LoadWsm
                 int i = 0;
                 foreach (var stressrecord in records)
                 {
-                    if (i % 100 == 0)
+                    if (i % 200 == 0)
                     {
                         await Task.Delay(1000);
                     }
-                    var dataString = JsonSerializer.Serialize(stressrecord, jsonOptions);
+                    var dataString = JsonSerializer.Serialize(StressApi.Controllers.StressGeoJsonController.FeatureFromRecord(stressrecord), jsonOptions);
                     var httpContent = new StringContent(dataString);
                     httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                     var postTask = client.PostAsync("", httpContent);
                     i++;
                 }
 
-                //Console.WriteLine(responseTask.Result);
-                //Console.WriteLine(await responseTask.Result.Content.ReadAsStringAsync());
-
                 var responseTask = client.GetAsync("");
 
                 Console.WriteLine(responseTask.Result);
-                var fromapi = JsonSerializer.Deserialize<List<StressRecord>>(await responseTask.Result.Content.ReadAsStringAsync());
+                var fromapi = JsonSerializer.Deserialize<FeatureCollection>(await responseTask.Result.Content.ReadAsStringAsync());
 
                 Console.WriteLine(fromapi.Count);
             }
