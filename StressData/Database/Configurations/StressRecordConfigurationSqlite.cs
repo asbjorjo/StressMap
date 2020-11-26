@@ -11,7 +11,9 @@ namespace StressData.Database.Configurations.Sqlite
         {
             base.Configure(builder);
 
-            builder.Property(s => s.Location).HasSrid(GeometryConstants.SRID);
+            builder.Property(s => s.Location)
+                .HasColumnType("POINTZ")
+                .HasSrid(GeometryConstants.SRID);
         }
     }
 }

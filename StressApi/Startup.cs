@@ -40,6 +40,13 @@ namespace StressApi
                             x.MigrationsAssembly("StressMigrationsSqlServer");
                             x.UseNetTopologySuite();
                         }),
+                    "PostgreSQL" => options.UseNpgsql(
+                        "connection",
+                        x =>
+                        {
+                            x.MigrationsAssembly("StressMigrationsPostgreSQL");
+                            x.UseNetTopologySuite();
+                        }),
                     _ => throw new ArgumentException($"Unsupported provider: {provider}")
                 });
             services.AddControllers()

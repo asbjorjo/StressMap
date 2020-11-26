@@ -16,8 +16,7 @@ namespace StressData.Database.Configurations
             builder.HasAlternateKey(s => s.WsmId);
 
             builder.Property(s => s.Location)
-                .IsRequired()
-                .HasColumnType("POINTZ");
+                .IsRequired();
             builder.Property(s => s.Quality)
                 .IsRequired()
                 .HasConversion<string>();

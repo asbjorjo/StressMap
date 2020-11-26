@@ -2,6 +2,8 @@
 using StressData.Model;
 using StressData.Database.Configurations;
 using StressData.Database.Configurations.Sqlite;
+using System;
+using StressData.Database.Configurations.PostgreSQL;
 
 namespace StressData.Database
 {
@@ -20,9 +22,15 @@ namespace StressData.Database
                 case "Microsoft.EntityFrameworkCore.Sqlite":
                     modelBuilder.ApplyConfiguration(new StressRecordConfigurationSqlite());
                     break;
-                default:
-                    modelBuilder.ApplyConfiguration(new StressRecordConfiguration());
+                case "Npgsql.EntityFrameworkCore.PostgreSQL":
+                    modelBuilder.HasPostgresExtension("postgis");
+                    modelBuilder.ApplyConfiguration(new StressRecordConfigurationPostgreSQL());
                     break;
+                case "Microsoft.EntityFrameworkCore.SqlServer":
+                    modelBuilder.ApplyConfiguration(new StressRecordConfigurationSqlServer());
+                    break;
+                default:
+                    throw new ArgumentException($"unknown provider {Database.ProviderName}");
             }
         }
     }
