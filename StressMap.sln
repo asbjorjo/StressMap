@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StressApi", "StressApi\Stre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadWsm", "LoadWsm\LoadWsm.csproj", "{6DC10F9A-0F80-4F6E-AFBB-06D810603E9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressMigrationsSqlite", "StressMigrationsSqlite\StressMigrationsSqlite.csproj", "{110783A7-6460-45CE-9BCE-110A6796D86F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StressMigrationsSqlite", "StressMigrationsSqlite\StressMigrationsSqlite.csproj", "{110783A7-6460-45CE-9BCE-110A6796D86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressMigrationsSqlServer", "StressMigrationsSqlServer\StressMigrationsSqlServer.csproj", "{3DEFF13A-C2FF-46BF-BC59-C64FE7AFF5A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StressMigrationsSqlServer", "StressMigrationsSqlServer\StressMigrationsSqlServer.csproj", "{3DEFF13A-C2FF-46BF-BC59-C64FE7AFF5A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressMigrationsPostgreSQL", "StressMigrationsPostgreSQL\StressMigrationsPostgreSQL.csproj", "{A958EDEA-1620-48DB-B3EF-85233C7668D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StressMigrationsPostgreSQL", "StressMigrationsPostgreSQL\StressMigrationsPostgreSQL.csproj", "{A958EDEA-1620-48DB-B3EF-85233C7668D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressMapWeb", "StressMapWeb\StressMapWeb.csproj", "{74F7ED3C-6E42-4E16-B53C-EF90FBF8D404}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{A958EDEA-1620-48DB-B3EF-85233C7668D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A958EDEA-1620-48DB-B3EF-85233C7668D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A958EDEA-1620-48DB-B3EF-85233C7668D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F7ED3C-6E42-4E16-B53C-EF90FBF8D404}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F7ED3C-6E42-4E16-B53C-EF90FBF8D404}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F7ED3C-6E42-4E16-B53C-EF90FBF8D404}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F7ED3C-6E42-4E16-B53C-EF90FBF8D404}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
