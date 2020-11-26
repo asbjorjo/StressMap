@@ -9,7 +9,7 @@ using StressApi.Database;
 namespace StressApi.Migrations
 {
     [DbContext(typeof(StressDbContext))]
-    [Migration("20201124172249_initial")]
+    [Migration("20201126002012_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
