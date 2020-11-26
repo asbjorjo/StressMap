@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -33,14 +34,23 @@ namespace StressApi.Controllers
         }
 
         // GET: api/StressGeoJson
+        [EnableCors("_allowSpecificOrigins")]
         [HttpGet]
-        public async Task<ActionResult<FeatureCollection>> GetStressRecords()
+        public async Task<ActionResult<FeatureCollection>> GetStressRecords(
+            [FromQuery] Feature boundary)
         {
-            var records = _context.Set<StressRecord>().OrderBy(s => s.WsmId);
-
             var geometryFactory = _geometryServices.CreateGeometryFactory(GeometryConstants.SRID);
             var result = new FeatureCollection();
+            
+            var records = _context.Set<StressRecord>().AsQueryable();
+                       
+            if (boundary.Geometry is not null)
+            {
+                records = records.Where(r => r.Location.CoveredBy(boundary.Geometry));
+            }
 
+            records = records.OrderBy(s => s.WsmId);
+            
             foreach (var record in records)
             {
                 result.Add(FeatureFromRecord(record));

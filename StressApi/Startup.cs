@@ -14,6 +14,8 @@ namespace StressApi
 {
     public class Startup
     {
+        readonly string AllowSpecificOrigins = "_allowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -49,6 +51,16 @@ namespace StressApi
                         }),
                     _ => throw new ArgumentException($"Unsupported provider: {provider}")
                 });
+            services.AddCors(options => 
+            {
+                options.AddPolicy(name: AllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:6000", "https://localhost:6001");
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                    });
+            });
             services.AddControllers()
                 .AddJsonOptions(o => {
                     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -74,6 +86,8 @@ namespace StressApi
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
