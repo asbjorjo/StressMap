@@ -13,7 +13,7 @@ using StressData.Database;
 using StressData.Database.Constants;
 using StressData.Model;
 
-namespace StressData.Controllers
+namespace StressApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -140,7 +140,7 @@ namespace StressData.Controllers
             return _context.Set<StressRecord>().Any(e => e.Id == id);
         }
 
-        private Feature FeatureFromRecord(StressRecord record)
+        public static Feature FeatureFromRecord(StressRecord record)
         {
             var feature = new Feature
             {

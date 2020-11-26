@@ -10,7 +10,7 @@ using StressData.Database;
 using System;
 using System.Text.Json.Serialization;
 
-namespace StressMapApi
+namespace StressApi
 {
     public class Startup
     {

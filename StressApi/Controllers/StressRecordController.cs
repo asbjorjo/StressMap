@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StressData.Controllers
+namespace StressApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
