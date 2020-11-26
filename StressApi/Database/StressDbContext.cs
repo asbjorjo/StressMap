@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StressData.Model;
 using StressApi.Database.Configurations;
+using StressApi.Database.Configurations.Sqlite;
 
 namespace StressApi.Database
 {
@@ -14,7 +15,15 @@ namespace StressApi.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new StressRecordConfiguration());
+            switch (Database.ProviderName)
+            {
+                case "Microsoft.EntityFrameworkCore.Sqlite":
+                    modelBuilder.ApplyConfiguration(new StressRecordConfigurationSqlite());
+                    break;
+                default:
+                    modelBuilder.ApplyConfiguration(new StressRecordConfiguration());
+                    break;
+            }
         }
     }
 }

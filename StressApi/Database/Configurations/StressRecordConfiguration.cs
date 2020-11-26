@@ -5,9 +5,9 @@ using StressData.Model;
 
 namespace StressApi.Database.Configurations
 {
-    class StressRecordConfiguration : IEntityTypeConfiguration<StressRecord>
+    public class StressRecordConfiguration : IEntityTypeConfiguration<StressRecord>
     {
-        public void Configure(EntityTypeBuilder<StressRecord> builder)
+        public virtual void Configure(EntityTypeBuilder<StressRecord> builder)
         {
             builder.ToTable(TableName.StressRecord);
 
@@ -17,7 +17,6 @@ namespace StressApi.Database.Configurations
 
             builder.Property(s => s.Location)
                 .IsRequired()
-                .HasSrid(GeometryConstants.SRID)
                 .HasColumnType("POINTZ");
             builder.Property(s => s.Quality)
                 .IsRequired()
