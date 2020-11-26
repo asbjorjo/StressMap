@@ -34,6 +34,12 @@ namespace StressApi
                             x.MigrationsAssembly("StressMigrationsSqlite"); 
                             x.UseNetTopologySuite(); 
                         }),
+                    "SqlServer" => options.UseSqlServer(
+                        "connection",
+                        x => {
+                            x.MigrationsAssembly("StressMigrationsSqlServer");
+                            x.UseNetTopologySuite();
+                        }),
                     _ => throw new ArgumentException($"Unsupported provider: {provider}")
                 });
             services.AddControllers()
