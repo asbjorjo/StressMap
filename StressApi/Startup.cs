@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NetTopologySuite;
 using StressApi.Database;
+using System;
 using System.Text.Json.Serialization;
 
 namespace StressMapApi
@@ -23,7 +24,13 @@ namespace StressMapApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<StressDbContext>(options => options.UseSqlite("Filename=stress.db", x => x.UseNetTopologySuite()));
+            var provider = Configuration.GetValue("Provider", "Sqlite");
+            services.AddDbContext<StressDbContext>(
+                options => _ = provider switch
+                {
+                    "Sqlite" => options.UseSqlite("Filename=stress.db", x => x.UseNetTopologySuite()),
+                    _ => throw new ArgumentException($"Unsupported provider: {provider}")
+                });
             services.AddControllers()
                 .AddJsonOptions(o => {
                     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
