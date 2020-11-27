@@ -5,8 +5,31 @@ import axios from 'axios';
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const ApiUrl = 'https://localhost:5001/api/StressGeoJson';
 
+const getMapBounds = (map, maps, stresses) => {
+    const bounds = new maps.LatLngBounds();
+
+    stresses.features.forEach((stress) => {
+        bounds.extend(new maps.LatLng(
+            stress.geometry.coordinates[1],
+            stress.geometry.coordinates[0],
+        ));
+    });
+    return bounds;
+};
+
 const handleApiLoaded = (map, maps, stresses) => {
+    map.data.setStyle(function (feature) {
+        return {
+            icon: {
+                url: 'https://localhost:5001/Icons/' + feature.getProperty('type') + '-' + feature.getProperty('regime') + '.png?angle=' + feature.getProperty('azimuth'),
+                scaledSize: maps.Size(40, 40),
+                anchor: maps.Point(20, 20)
+            }
+        }
+    });
     map.data.addGeoJson(stresses);
+    const bounds = getMapBounds(map, maps, stresses);
+    map.fitBounds(bounds);
 };
 
 export class StressMap extends Component {
