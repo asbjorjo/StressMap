@@ -351,3 +351,4 @@ MigrationBackup/
 *.db
 *.db-wal
 *.db-shm
+*.eslintcache
