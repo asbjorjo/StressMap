@@ -21,7 +21,7 @@ const handleApiLoaded = (map, maps, stresses) => {
     map.data.setStyle(function (feature) {
         return {
             icon: {
-                url: 'https://localhost:5001/Icons/' + feature.getProperty('type') + '-' + feature.getProperty('regime') + '.png?angle=' + feature.getProperty('azimuth'),
+                url: 'https://localhost:5001/Icons/' + feature.getProperty('icon') + '.png?angle=' + feature.getProperty('azimuth'),
                 scaledSize: maps.Size(40, 40),
                 anchor: maps.Point(20, 20)
             }

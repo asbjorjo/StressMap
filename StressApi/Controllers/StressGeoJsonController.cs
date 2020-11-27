@@ -10,6 +10,7 @@ using NetTopologySuite;
 using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.Converters;
+using StressApi.Helpers;
 using StressData.Database;
 using StressData.Database.Constants;
 using StressData.Model;
@@ -155,7 +156,7 @@ namespace StressApi.Controllers
             return _context.Set<StressRecord>().Any(e => e.Id == id);
         }
 
-        public static Feature FeatureFromRecord(StressRecord record)
+        private Feature FeatureFromRecord(StressRecord record)
         {
             var feature = new Feature
             {
@@ -167,7 +168,8 @@ namespace StressApi.Controllers
                         { "azimuth",  record.Azimuth},
                         { "ISO", record.ISO },
                         { "regime", record.Regime },
-                        { "type", record.Type }
+                        { "type", record.Type },
+                        { "icon", StressRecordHelper.StressRecordStyle(record) }
                      }
             };
 
