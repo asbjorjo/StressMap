@@ -26,7 +26,10 @@ namespace StressApi.Helpers
             { RecordType.HFM, "HF"  },
             { RecordType.HFP, "HF"  },
             { RecordType.OC,  "OC"  },
-            { RecordType.PC,  "GI"  }
+            { RecordType.PC,  "GI"  },
+            { RecordType.SWB, "BO"  },
+            { RecordType.SWL, "BO" },
+            { RecordType.SWS, "FMS" }
         };
         public static readonly Dictionary<RegimeType, string> mapRegimeForStyle = new Dictionary<RegimeType, string>()
         {

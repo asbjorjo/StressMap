@@ -70,16 +70,16 @@ namespace LoadWsm
                 int i = 0;
                 foreach (var stressrecord in records)
                 {
-                    if (i % 100 == 0)
-                    {
-                        Console.WriteLine(i);
-                        await Task.Delay(1000);
-                    }
                     var dataString = JsonSerializer.Serialize(stressrecord, jsonOptions);
                     var httpContent = new StringContent(dataString);
                     httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                     var postTask = client.PostAsync("", httpContent);
                     i++;
+                    if (i % 100 == 0)
+                    {
+                        Console.WriteLine(i);
+                        await Task.Delay(1500);
+                    }
                 }
 
                 var responseTask = client.GetAsync("");
