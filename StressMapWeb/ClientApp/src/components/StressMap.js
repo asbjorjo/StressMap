@@ -1,35 +1,27 @@
 ﻿import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import pointsWithPylogon from '@turf/points-within-polygon';
+import bboxPolygon from '@turf/bbox-polygon';
 import axios from 'axios';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const ApiUrl = 'https://localhost:5001/api/StressGeoJson';
-
-const getMapBounds = (map, maps, stresses) => {
-    const bounds = new maps.LatLngBounds();
-
-    stresses.features.forEach((stress) => {
-        bounds.extend(new maps.LatLng(
-            stress.geometry.coordinates[1],
-            stress.geometry.coordinates[0],
-        ));
-    });
-    return bounds;
-};
 
 const handleApiLoaded = (map, maps, stresses) => {
     map.data.setStyle(function (feature) {
         return {
             icon: {
                 url: 'https://localhost:5001/Icons/' + feature.getProperty('icon') + '.png?angle=' + feature.getProperty('azimuth'),
-                scaledSize: maps.Size(40, 40),
-                anchor: maps.Point(20, 20)
+                scaledSize: new maps.Size(32, 32),
+                anchor: new maps.Point(16, 16)
             }
         }
     });
-    map.data.addGeoJson(stresses);
-    const bounds = getMapBounds(map, maps, stresses);
-    map.fitBounds(bounds);
+    const bounds = map.getBounds().toJSON();
+    console.log(bounds);
+    const bounds_polygon = bboxPolygon([bounds.west, bounds.south, bounds.east, bounds.north]);
+    const visible_stresses = pointsWithPylogon(stresses, bounds_polygon);
+
+    map.data.addGeoJson(visible_stresses);
 };
 
 export class StressMap extends Component {
@@ -37,10 +29,10 @@ export class StressMap extends Component {
 
     static defaultProps = {
         center: {
-            lat: 0,
-            lng: 0
+            lat: 51.17,
+            lng: 10.45
         },
-        zoom: 2
+        zoom: 5
     };
 
     state = {
@@ -84,11 +76,6 @@ export class StressMap extends Component {
                         yesIWantToUseGoogleMapApiInternals
                         onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, stresses)}
                     >
-                        <AnyReactComponent
-                            lat={59.955413}
-                            lng={30.337844}
-                            text="My Marker"
-                        />
                     </GoogleMapReact>
                 </div>
             );
