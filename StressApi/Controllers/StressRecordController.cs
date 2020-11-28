@@ -46,10 +46,10 @@ namespace StressApi.Controllers
         {
             if (_dbContext.Set<StressRecord>().SingleOrDefault(r => r.WsmId == record.WsmId) != null)
             {
-                return BadRequest("Record already exists.");
+                return Conflict("Record already exists.");
             }
 
-            await _dbContext.AddAsync(record);
+            _dbContext.Add(record);
 
             await _dbContext.SaveChangesAsync();
 

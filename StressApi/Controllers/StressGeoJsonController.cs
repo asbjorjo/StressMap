@@ -126,7 +126,7 @@ namespace StressApi.Controllers
 
             if (_context.Set<StressRecord>().Any(s => s.WsmId == record.WsmId))
             {
-                return BadRequest("trying to add existing record");
+                return Conflict("trying to add existing record");
             }
 
             await _context.Set<StressRecord>().AddAsync(record);
