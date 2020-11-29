@@ -27,7 +27,6 @@ namespace StressData.Database.Configurations
                             .IsRequired()
                             .HasConversion<string>();
 
-            builder.HasIndex(s => s.Location);
             builder.HasIndex(s => s.Quality);
             builder.HasIndex(s => s.Regime);
             builder.HasIndex(s => s.Type);

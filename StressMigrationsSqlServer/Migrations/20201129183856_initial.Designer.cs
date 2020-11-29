@@ -10,7 +10,7 @@ using StressData.Database;
 namespace StressMigrationsSqlServer.Migrations
 {
     [DbContext(typeof(StressDbContext))]
-    [Migration("20201126025540_initial")]
+    [Migration("20201129183856_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace StressMigrationsSqlServer.Migrations
 
                     b.Property<Point>("Location")
                         .IsRequired()
-                        .HasColumnType("POINTZ");
+                        .HasColumnType("geography");
 
                     b.Property<string>("Quality")
                         .IsRequired()
@@ -57,8 +57,6 @@ namespace StressMigrationsSqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("WsmId");
-
-                    b.HasIndex("Location");
 
                     b.HasIndex("Quality");
 

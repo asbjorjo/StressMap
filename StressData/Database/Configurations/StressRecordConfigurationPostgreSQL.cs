@@ -11,6 +11,8 @@ namespace StressData.Database.Configurations.PostgreSQL
             base.Configure(builder);
 
             builder.Property(s => s.Location).HasColumnType("geometry (pointz)");
+        
+            builder.HasIndex(s => s.Location);
         }
     }
 }

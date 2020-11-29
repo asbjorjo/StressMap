@@ -34,7 +34,7 @@ namespace StressMigrationsSqlServer.Migrations
 
                     b.Property<Point>("Location")
                         .IsRequired()
-                        .HasColumnType("POINTZ");
+                        .HasColumnType("geography");
 
                     b.Property<string>("Quality")
                         .IsRequired()
@@ -55,8 +55,6 @@ namespace StressMigrationsSqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("WsmId");
-
-                    b.HasIndex("Location");
 
                     b.HasIndex("Quality");
 

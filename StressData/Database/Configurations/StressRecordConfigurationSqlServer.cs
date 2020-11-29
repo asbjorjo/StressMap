@@ -9,9 +9,6 @@ namespace StressData.Database.Configurations
         public override void Configure(EntityTypeBuilder<StressRecord> builder)
         {
             base.Configure(builder);
-
-            builder.Property(s => s.Location)
-                .HasColumnType("POINTZ");
         }
     }
 }
