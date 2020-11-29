@@ -2,9 +2,20 @@
 import GoogleMapReact from 'google-map-react';
 import pointsWithPylogon from '@turf/points-within-polygon';
 import bboxPolygon from '@turf/bbox-polygon';
+import booleanContains from '@turf/boolean-contains';
+import transformScale from '@turf/transform-scale';
 import axios from 'axios';
 
 const ApiUrl = 'https://localhost:5001/api/StressGeoJson';
+var oldBounds;
+
+const updateMap = (map, maps, stresses) => {
+    const bounds = map.getBounds().toJSON();
+    const bounds_polygon = bboxPolygon([bounds.west, bounds.south, bounds.east, bounds.north]);
+    const visible_stresses = pointsWithPylogon(stresses, bounds_polygon);
+
+    map.data.addGeoJson(visible_stresses);
+};
 
 const handleApiLoaded = (map, maps, stresses) => {
     map.data.setStyle(function (feature) {
@@ -16,12 +27,23 @@ const handleApiLoaded = (map, maps, stresses) => {
             }
         }
     });
-    const bounds = map.getBounds().toJSON();
-    console.log(bounds);
-    const bounds_polygon = bboxPolygon([bounds.west, bounds.south, bounds.east, bounds.north]);
-    const visible_stresses = pointsWithPylogon(stresses, bounds_polygon);
 
-    map.data.addGeoJson(visible_stresses);
+    const ob = map.getBounds().toJSON();
+    oldBounds = bboxPolygon([ob.west, ob.south, ob.east, ob.north]);
+    maps.event.addListener(map, 'bounds_changed', () => {
+        const nb = map.getBounds().toJSON();
+        const newBounds = bboxPolygon([nb.west, nb.south, nb.east, nb.north])   ;
+
+        const oldBox = transformScale(oldBounds, 1.1);
+       
+        if (!booleanContains(oldBox, newBounds)) {
+            console.log('updating map data');
+            updateMap(map, maps, stresses);
+            oldBounds = newBounds;
+        }
+    })
+
+    updateMap(map, maps, stresses);
 };
 
 export class StressMap extends Component {
