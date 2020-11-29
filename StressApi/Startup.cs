@@ -57,7 +57,7 @@ namespace StressApi
                 options.AddPolicy(name: AllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:6000", "https://localhost:6001");
+                        builder.WithOrigins("http://localhost:6000", "https://localhost:6001", "https://localhost:44318");
                         builder.AllowAnyHeader();
                         builder.AllowAnyMethod();
                     });
