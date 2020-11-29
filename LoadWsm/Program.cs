@@ -22,7 +22,7 @@ namespace LoadWsm
             var fileName = "C:\\Users\\asbjo\\Downloads\\wsm2016.csv";
 
             var records = new List<StressRecord>();
-            
+
             using (var reader = new StreamReader(fileName))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -44,7 +44,7 @@ namespace LoadWsm
                             csv.GetField<double>("LAT"),
                             csv.GetField<double>("DEPTH") * 1000
                             )
-                     };
+                    };
 
                     record.Location.SRID = 4326;
 
@@ -59,30 +59,40 @@ namespace LoadWsm
 
             Console.WriteLine(records.Count);
 
-            using (var client = new HttpClient())
+            var handler = new HttpClientHandler
             {
-                client.BaseAddress = new Uri("https://localhost:5001/StressRecord/");
+                MaxConnectionsPerServer = 5
+            };
+
+            using (var client = new HttpClient(handler))
+            {
+                //client.BaseAddress = new Uri("https://localhost:5001/StressRecord/");
+                client.BaseAddress = new Uri("http://stressmap-dev.azurewebsites.net/");
 
                 var jsonOptions = new JsonSerializerOptions();
                 jsonOptions.Converters.Add(new JsonStringEnumConverter());
                 jsonOptions.Converters.Add(new NetTopologySuite.IO.Converters.GeoJsonConverterFactory());
 
-                int i = 0;
+                var tasks = new List<Task>();
+                var i = 0;
                 foreach (var stressrecord in records)
                 {
+                    i++;
                     var dataString = JsonSerializer.Serialize(stressrecord, jsonOptions);
                     var httpContent = new StringContent(dataString);
                     httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-                    var postTask = client.PostAsync("", httpContent);
-                    i++;
-                    if (i % 100 == 0)
+                    tasks.Add(client.PostAsync("StressRecord", httpContent));
+
+                    if (i % 1000 == 0)
                     {
                         Console.WriteLine(i);
-                        await Task.Delay(1500);
+                        await Task.WhenAll(tasks);
+                        tasks.Clear();
                     }
                 }
 
-                var responseTask = client.GetAsync("");
+
+                var responseTask = client.GetAsync("StressRecord");
 
                 Console.WriteLine(responseTask.Result);
                 var fromapi = JsonSerializer.Deserialize<List<StressRecord>>(await responseTask.Result.Content.ReadAsStringAsync());
