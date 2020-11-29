@@ -34,7 +34,7 @@ const handleApiLoaded = (map, maps, stresses) => {
         const nb = map.getBounds().toJSON();
         const newBounds = bboxPolygon([nb.west, nb.south, nb.east, nb.north])   ;
 
-        const oldBox = transformScale(oldBounds, 1.1);
+        const oldBox = transformScale(oldBounds, 1.2);
        
         if (!booleanContains(oldBox, newBounds)) {
             console.log('updating map data');
