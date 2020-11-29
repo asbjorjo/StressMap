@@ -19,6 +19,7 @@ namespace StressApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class StressGeoJsonController : ControllerBase
     {
         private readonly DbContext _context;
@@ -62,7 +63,7 @@ namespace StressApi.Controllers
 
         // GET: api/StressGeoJson/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IFeature>> GetStressRecord(long id)
+        public async Task<ActionResult<Feature>> GetStressRecord(long id)
         {
             var stressRecord = await _context.Set<StressRecord>().FindAsync(id);
 
@@ -77,7 +78,7 @@ namespace StressApi.Controllers
         // PUT: api/StressGeoJson/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStressRecord(long id, IFeature stressFeature)
+        public async Task<IActionResult> PutStressRecord(long id, Feature stressFeature)
         {
             StressRecord stressRecord;
 
@@ -120,7 +121,7 @@ namespace StressApi.Controllers
         // POST: api/StressGeoJson
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Feature>> PostStressRecord(IFeature stressFeature)
+        public async Task<ActionResult<Feature>> PostStressRecord(Feature stressFeature)
         {
             var record = RecordFromFeature(stressFeature);
 
@@ -176,7 +177,7 @@ namespace StressApi.Controllers
             return feature;
         }
 
-        private StressRecord RecordFromFeature(IFeature feature)
+        private StressRecord RecordFromFeature(Feature feature)
         {
             feature.Attributes.TryDeserializeJsonObject(_jsonOptions.Value.JsonSerializerOptions, out StressRecord record);
 
