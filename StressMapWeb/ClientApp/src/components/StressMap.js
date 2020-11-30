@@ -6,7 +6,8 @@ import booleanContains from '@turf/boolean-contains';
 import transformScale from '@turf/transform-scale';
 import axios from 'axios';
 
-const ApiUrl = 'https://localhost:5001/api/StressGeoJson';
+const ApiHost = 'stressapi-dev.azurewebsites.net';
+const ApiUrl = 'https://' + ApiHost + '/api/StressGeoJson/';
 var oldBounds;
 
 const updateMap = (map, maps, stresses) => {
@@ -21,7 +22,7 @@ const handleApiLoaded = (map, maps, stresses) => {
     map.data.setStyle(function (feature) {
         return {
             icon: {
-                url: 'https://localhost:5001/Icons/' + feature.getProperty('icon') + '.png?angle=' + 5*Math.round(feature.getProperty('azimuth')/5),
+                url: 'https://' + ApiHost + '/Icons/' + feature.getProperty('icon') + '.png?angle=' + 5*Math.round(feature.getProperty('azimuth')/5),
                 scaledSize: new maps.Size(32, 32),
                 anchor: new maps.Point(16, 16)
             }
