@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using StressData.Database.Constants;
 using StressData.Model;
 
 namespace StressData.Database.Configurations.PostgreSQL
@@ -10,7 +11,7 @@ namespace StressData.Database.Configurations.PostgreSQL
         {
             base.Configure(builder);
 
-            builder.Property(s => s.Location).HasColumnType("geometry (pointz)");
+            builder.Property(s => s.Location).HasColumnType("geometry (pointz, " + GeometryConstants.SRID + ")");
         
             builder.HasIndex(s => s.Location);
         }
