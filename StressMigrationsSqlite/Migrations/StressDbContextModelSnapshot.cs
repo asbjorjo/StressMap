@@ -16,6 +16,28 @@ namespace StressMigrationsSqlite.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("StressData.Model.StressPlate", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Polygon>("Outline")
+                        .IsRequired()
+                        .HasColumnType("polygon")
+                        .HasAnnotation("Sqlite:Srid", 4326);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("stressplate");
+                });
+
             modelBuilder.Entity("StressData.Model.StressRecord", b =>
                 {
                     b.Property<long>("Id")

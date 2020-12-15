@@ -19,6 +19,28 @@ namespace StressMigrationsSqlServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("StressData.Model.StressPlate", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Polygon>("Outline")
+                        .IsRequired()
+                        .HasColumnType("geography");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("stressplate");
+                });
+
             modelBuilder.Entity("StressData.Model.StressRecord", b =>
                 {
                     b.Property<long>("Id")
