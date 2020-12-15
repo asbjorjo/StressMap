@@ -63,7 +63,7 @@ namespace StressApi.Controllers
             {
                 return BadRequest("Trying to update non-existent stress record.");
             }
-            if (_dbContext.Entry(record).State == Microsoft.EntityFrameworkCore.EntityState.Detached)
+            if (_dbContext.Entry(record).State == EntityState.Detached)
             {
                 _dbContext.Update(record);
             }
