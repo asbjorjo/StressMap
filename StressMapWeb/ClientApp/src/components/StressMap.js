@@ -4,28 +4,54 @@ import pointsWithPylogon from '@turf/points-within-polygon';
 import bboxPolygon from '@turf/bbox-polygon';
 import booleanContains from '@turf/boolean-contains';
 import transformScale from '@turf/transform-scale';
+import rewind from '@turf/rewind';
 import axios from 'axios';
 
-const ApiHost = 'stressapi-dev.azurewebsites.net';
-const ApiUrl = 'https://' + ApiHost + '/api/StressGeoJson/';
+//const ApiHost = 'stressapi-dev.azurewebsites.net';
+const ApiHost = 'localhost:5001';
+const RecordUrl = 'https://' + ApiHost + '/api/StressGeoJson/';
+const PlateUrl = 'https://' + ApiHost + '/api/PlateGeoJson/';
 var oldBounds;
+var plateLayer;
+var platenameWindow;
+var stressLayer;
 
-const updateMap = (map, maps, stresses) => {
+const updateMap = (map, stresses, plates) => {
     const bounds = map.getBounds().toJSON();
     const bounds_polygon = bboxPolygon([bounds.west, bounds.south, bounds.east, bounds.north]);
     const visible_stresses = pointsWithPylogon(stresses, bounds_polygon);
 
-    map.data.addGeoJson(visible_stresses);
+    stressLayer.addGeoJson(visible_stresses);
 };
 
-const handleApiLoaded = (map, maps, stresses) => {
-    map.data.setStyle(function (feature) {
+const handleApiLoaded = (map, maps, stresses, plates) => {
+    plateLayer = new maps.Data({map: map});
+    stressLayer = new maps.Data({ map: map });
+    platenameWindow = new maps.InfoWindow();
+    plateLayer.addListener('click', function (event) {
+        console.log('plate click');
+        platenameWindow.setContent(event.feature.getProperty('name'));
+        platenameWindow.setPosition(event.latLng);
+        platenameWindow.open(map);
+    });
+    stressLayer.addListener('click', function (event) {
+        console.log('stress click');
+    });
+
+    stressLayer.setStyle(function (feature) {
         return {
             icon: {
                 url: 'https://' + ApiHost + '/Icons/' + feature.getProperty('icon') + '.png?angle=' + 5*Math.round(feature.getProperty('azimuth')/5),
                 scaledSize: new maps.Size(32, 32),
                 anchor: new maps.Point(16, 16)
             }
+        }
+    });
+
+    plateLayer.setStyle(function (feature) {
+        return {
+            strokeWeight: 2,
+            fillOpacity: 0
         }
     });
 
@@ -39,12 +65,13 @@ const handleApiLoaded = (map, maps, stresses) => {
        
         if (!booleanContains(oldBox, newBounds)) {
             console.log('updating map data');
-            updateMap(map, maps, stresses);
+            updateMap(map, stresses, plates);
             oldBounds = newBounds;
         }
     })
 
-    updateMap(map, maps, stresses);
+    plateLayer.addGeoJson(plates);
+    updateMap(map, stresses, plates);
 };
 
 export class StressMap extends Component {
@@ -59,35 +86,52 @@ export class StressMap extends Component {
     };
 
     state = {
-        isLoaded: false,
+        stressesLoaded: false,
+        platesLoaded: false,
         stresses: [],
+        plates: [],
         error: null
     };
 
     componentDidMount() {
-        axios.get(ApiUrl)
+        axios.get(RecordUrl)
             .then(
                 (res) => {
                     this.setState({
-                        isLoaded: true,
+                        stressesLoaded: true,
                         stresses: res.data
                     });
                 },
                 (error) => {
                     this.setState({
-                        isLoaded: true,
+                        stressesLoaded: true,
                         error
                     });
                 }
             );
-
+        axios.get(PlateUrl)
+            .then(
+                (res) => {
+                    //var jsonPlates = res.data;
+                    this.setState({
+                        platesLoaded: true,
+                        plates: res.data
+                    });
+                },
+                (error) => {
+                    this.setState({
+                        platesLoaded: true,
+                        error
+                    });
+                }
+            );
     }
 
     render() {
-        const { isLoaded, stresses, error } = this.state;
+        const { stressesLoaded, platesLoaded, stresses, plates, error } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
+        } else if (!stressesLoaded || !platesLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
@@ -97,7 +141,7 @@ export class StressMap extends Component {
                         defaultCenter={this.props.center}
                         defaultZoom={this.props.zoom}
                         yesIWantToUseGoogleMapApiInternals
-                        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, stresses)}
+                        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, stresses, plates)}
                     >
                     </GoogleMapReact>
                 </div>
