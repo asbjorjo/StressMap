@@ -12,6 +12,7 @@ namespace StressData.Database.Configurations
             base.Configure(builder);
 
             builder.Property(p => p.Outline)
+                .HasColumnType("polygon")
                 .HasSrid(GeometryConstants.SRID);
         }
     }
