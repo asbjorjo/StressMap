@@ -14,7 +14,7 @@ namespace StressMigrationsSqlServer.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Outline = table.Column<Polygon>(type: "geography", nullable: false)
+                    Outline = table.Column<Polygon>(type: "geometry", nullable: false)
                 },
                 constraints: table =>
                 {

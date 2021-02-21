@@ -32,7 +32,7 @@ namespace StressMigrationsSqlServer.Migrations
 
                     b.Property<Polygon>("Outline")
                         .IsRequired()
-                        .HasColumnType("geography");
+                        .HasColumnType("polygon");
 
                     b.HasKey("Id");
 

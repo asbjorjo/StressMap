@@ -10,7 +10,7 @@ using StressData.Database;
 namespace StressMigrationsSqlServer.Migrations
 {
     [DbContext(typeof(StressDbContext))]
-    [Migration("20201211203048_plates")]
+    [Migration("20201215185753_plates")]
     partial class plates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace StressMigrationsSqlServer.Migrations
 
                     b.Property<Polygon>("Outline")
                         .IsRequired()
-                        .HasColumnType("geography");
+                        .HasColumnType("polygon");
 
                     b.HasKey("Id");
 
