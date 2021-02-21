@@ -7,6 +7,10 @@ code {
   color: #E01A76;
 }
 
+.map-container {
+    height: 80vh;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

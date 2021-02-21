@@ -1,11 +1,14 @@
-﻿import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
+﻿import React, { useState, useEffect } from 'react';
+
+import GeoJSON from 'ol/format/GeoJSON';
+import Feature from 'ol/Feature';
+
 import pointsWithPylogon from '@turf/points-within-polygon';
 import bboxPolygon from '@turf/bbox-polygon';
 import booleanContains from '@turf/boolean-contains';
 import transformScale from '@turf/transform-scale';
-import rewind from '@turf/rewind';
 import axios from 'axios';
+import MapWrapper from './MapWrapper';
 
 //const ApiHost = 'stressapi-dev.azurewebsites.net';
 const ApiHost = 'localhost:5001';
@@ -74,78 +77,39 @@ const handleApiLoaded = (map, maps, stresses, plates) => {
     updateMap(map, stresses, plates);
 };
 
-export class StressMap extends Component {
-    static displayName = StressMap.name;
+export function StressMap(props) {
+    const [stresses, setStresses] = useState([]);
+    const [plates, setPlates] = useState([]);
 
-    static defaultProps = {
-        center: {
-            lat: 51.17,
-            lng: 10.45
-        },
-        zoom: 5
-    };
-
-    state = {
-        stressesLoaded: false,
-        platesLoaded: false,
-        stresses: [],
-        plates: [],
-        error: null
-    };
-
-    componentDidMount() {
-        axios.get(RecordUrl)
-            .then(
-                (res) => {
-                    this.setState({
-                        stressesLoaded: true,
-                        stresses: res.data
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        stressesLoaded: true,
-                        error
-                    });
+    useEffect(() => {
+        fetch(RecordUrl)
+            .then(response => response.json())
+            .then((fetchedFeatures) => {
+                const wktOptions = {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
                 }
-            );
-        axios.get(PlateUrl)
-            .then(
-                (res) => {
-                    //var jsonPlates = res.data;
-                    this.setState({
-                        platesLoaded: true,
-                        plates: res.data
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        platesLoaded: true,
-                        error
-                    });
-                }
-            );
-    }
+                const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions);
 
-    render() {
-        const { stressesLoaded, platesLoaded, stresses, plates, error } = this.state;
-        if (error) {
-            return <div>Error: {error.message}</div>;
-        } else if (!stressesLoaded || !platesLoaded) {
-            return <div>Loading...</div>;
-        } else {
-            return (
-                <div style={{ height: '100vh', widht: '100%' }}>
-                    <GoogleMapReact
-                        bootstrapURLKeys={{ key: 'AIzaSyC5-5VL3QXjGSo6D-XD9nju-aXdB1FMuxo' }}
-                        defaultCenter={this.props.center}
-                        defaultZoom={this.props.zoom}
-                        yesIWantToUseGoogleMapApiInternals
-                        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, stresses, plates)}
-                    >
-                    </GoogleMapReact>
-                </div>
-            );
-        }
-    }
+                setStresses(parsedFeatures);
+        })
+    },[]);
+
+    useEffect(() => {
+        fetch(PlateUrl)
+            .then(response => response.json())
+            .then((fetchedFeatures) => {
+                const wktOptions = {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }
+                const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions);
+
+                    setPlates(parsedFeatures);
+            })
+    }, []);
+
+    return (
+        <MapWrapper stresses={stresses} plates={[]} />
+    );
 }

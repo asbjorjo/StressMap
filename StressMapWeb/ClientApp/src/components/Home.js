@@ -3,17 +3,16 @@ import React, { Component } from 'react';
 export class Home extends Component {
   static displayName = Home.name;
 
-  render () {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <h1>Stress Map</h1>
+                <p>The Map view uses Google Maps to overlay data from various sources:</p>
+                <ul>
+                    <li><a href='http://www.world-stress-map.org/'>World Stress Map</a> is used for the stress markers</li>
+                    <li><a href='http://peterbird.name/publications/2003_PB2002/2003_PB2002.htm'>An updated digital model of plate boundaries</a> by Peter Bird in Geochemistry Geophysics Geosystems is used for plate boundaries</li>
+                </ul>
+            </div>
+        );
+    }
 }
