@@ -38,7 +38,7 @@ namespace StressApi
                             x.UseNetTopologySuite(); 
                         }),
                     "SqlServer" => options.UseSqlServer(
-                        "connection",
+                        "Server=stressmap-dev.database.windows.net;Database=StressMap-dev;User Id=stressmap-man;Password=FuckOff2020!",
                         x => {
                             x.MigrationsAssembly("StressMigrationsSqlServer");
                             x.UseNetTopologySuite();
@@ -58,10 +58,12 @@ namespace StressApi
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:6000", "https://localhost:6001", "https://localhost:44318");
+                        builder.WithOrigins("https://stressmap-dev.azurewebsites.net");
                         builder.AllowAnyHeader();
                         builder.AllowAnyMethod();
                     });
             });
+
             services.AddControllers()
                 .AddJsonOptions(o => {
                     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
